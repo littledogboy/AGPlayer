@@ -40,9 +40,6 @@
         self.avInfo = [[H5_AVInfo alloc] init];
         [_avInfo setValuesForKeysWithDictionary:rootDic];
         NSURL *url = [NSURL URLWithString:_avInfo.src];
-        NSLog(@"%@", _avInfo.src);
-        // http://cn-shcy2-dx.acgvideo.com/vg7/a/44/1482982-1.mp4?expires=1473776700&ssig=qPgRrZvMOZviBpkLXQ5JEg&oi=1700219441&internal=1&rate=0
-//        NSURL *url = [NSURL URLWithString:@"http://cn-shcy3-dx.acgvideo.com/vg2/a/c6/9597201-1.flv?expires=1473790500&ssig=Xs9ziv5XuRYOBGPmhkH93A&oi=1700219441&rate=0"];
         [self.playerView updatePlayerWithURL:url];
     }];
     // 3.

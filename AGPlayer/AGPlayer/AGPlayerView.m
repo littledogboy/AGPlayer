@@ -17,7 +17,6 @@
 {
     BOOL _isIntoBackground; // 是否在后台
     BOOL _isShowToolbar; // 是否显示工具条
-    BOOL _isSliding; // 是否正在滑动
     AVPlayerItem *_playerItem;
     AVPlayerLayer *_playerLayer;
     NSTimer *_timer;
@@ -55,7 +54,6 @@
 @implementation AGPlayerView
 - (void)dealloc {
     [self removeObserveAndNOtification];
-    [_player removeTimeObserver:_playTimeObserver]; // 移除playTimeObserver
 }
 
 - (void)removeObserveAndNOtification {
@@ -253,19 +251,16 @@
     [self addNotification]; // 添加通知
 }
 
-// 观察播放进度
 - (void)monitoringPlayback:(AVPlayerItem *)item {
     __weak typeof(self)WeakSelf = self;
     
-    // 播放进度, 每秒执行30次， CMTime 为30分之一秒
+    // 实时获得缓冲情况, 每秒执行30次， CMTime 为30分之一秒
     _playTimeObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 30.0) queue:dispatch_get_main_queue() usingBlock:^(CMTime time) {
         if (_touchMode != TouchPlayerViewModeHorizontal) {
-            // 当前播放秒
+            // 当前播放描述
             float currentPlayTime = (double)item.currentTime.value/ item.currentTime.timescale;
-            // 更新slider, 如果正在滑动则不更新
-            if (_isSliding == NO) {
-                [WeakSelf updateVideoSlider:currentPlayTime];
-            }
+            // 播放百分比， 更新slider
+            [WeakSelf updateVideoSlider:currentPlayTime];
         } else {
             return;
         }
@@ -311,7 +306,7 @@
                 // CMTime 本身是一个结构体
                 CMTime duration = item.duration; // 获取视频长度
                 NSLog(@"%.2f", CMTimeGetSeconds(duration));
-                // 设置视频时间
+                // 设置最大持续时间
                 [self setMaxDuration:CMTimeGetSeconds(duration)];
                 // 播放
                 [self play];
@@ -332,7 +327,7 @@
 
 // 设置最大时间
 - (void)setMaxDuration:(CGFloat)duration {
-    self.playProgress.maximumValue = duration; // maxValue = CMGetSecond(item.duration)
+    self.playProgress.maximumValue = duration;
     self.endLabel.text = [NSString convertTime:duration];
 }
 
@@ -345,7 +340,7 @@
     CMTimeRange timeRange = [loadedTimeRanges.firstObject CMTimeRangeValue]; // 获取缓冲区域
     float startSeconds = CMTimeGetSeconds(timeRange.start);
     float durationSeconds = CMTimeGetSeconds(timeRange.duration);
-    NSTimeInterval result = startSeconds + durationSeconds; // 计算总缓冲时间 = start + duration
+    NSTimeInterval result = startSeconds + durationSeconds; // 计算总缓冲时间
     return result;
 }
 
@@ -419,19 +414,16 @@
 }
 
 - (IBAction)playerSliderTouchUpInside:(id)sender {
-    _isSliding = NO; // 滑动结束
     [self play];
 }
 
 // 不要拖拽的时候改变， 手指抬起来后缓冲完成再改变
 - (IBAction)playerSliderValueChanged:(id)sender {
-    _isSliding = YES;
     [self pause];
     // 跳转到拖拽秒处
-    // self.playProgress.maxValue = value / timeScale
-    // value = progress.value * timeScale
-    // CMTimemake(value, timeScale) =  (progress.value, 1.0)
-    CMTime changedTime = CMTimeMakeWithSeconds(self.playProgress.value, 1.0);
+    // self.playProgress.value = value / timeScale
+    // 帧秒 = value  /  timeScale
+    CMTime changedTime = CMTimeMake(self.playProgress.value, 1.0);
     NSLog(@"%.2f", self.playProgress.value);
     [_playerItem seekToTime:changedTime completionHandler:^(BOOL finished) {
         // 跳转完成后做某事

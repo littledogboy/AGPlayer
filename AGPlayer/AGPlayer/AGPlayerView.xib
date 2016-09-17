@@ -57,7 +57,7 @@
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <state key="normal" title="后台">
-                                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                     </state>
                                     <variation key="default">
                                         <mask key="constraints">
@@ -355,8 +355,7 @@
                                             <exclude reference="ZGv-6j-Cxl"/>
                                         </mask>
                                     </variation>
-                                    <variation key="heightClass=compact" misplaced="YES">
-                                        <rect key="frame" x="495" y="5" width="27" height="29"/>
+                                    <variation key="heightClass=compact">
                                         <mask key="constraints">
                                             <include reference="E1q-Iw-aj3"/>
                                             <include reference="ZGv-6j-Cxl"/>
@@ -564,7 +563,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                             <constraints>
                                 <constraint firstItem="rvk-po-Ry4" firstAttribute="top" secondItem="6ub-FR-NoT" secondAttribute="top" id="5n6-xl-Qnr"/>
                                 <constraint firstItem="rvk-po-Ry4" firstAttribute="centerY" secondItem="6ub-FR-NoT" secondAttribute="centerY" id="AXc-Hl-ewl"/>
