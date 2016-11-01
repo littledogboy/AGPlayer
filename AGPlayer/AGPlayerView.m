@@ -67,6 +67,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+// xib 加载完成后 与 fileOwner 建立连接调用
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -80,7 +81,7 @@
 }
 
 
-// xib 时调用
+// xib 加载时调用
 - (instancetype)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if (self) {
@@ -192,6 +193,7 @@
     _playerLayer.frame = self.bounds;
 }
 
+#pragma mark- sizeClass 横竖屏约束
 // sizeClass 横竖屏切换时，执行
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
     [super traitCollectionDidChange:previousTraitCollection];

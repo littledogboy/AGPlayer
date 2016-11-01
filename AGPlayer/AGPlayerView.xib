@@ -355,8 +355,7 @@
                                             <exclude reference="ZGv-6j-Cxl"/>
                                         </mask>
                                     </variation>
-                                    <variation key="heightClass=compact" misplaced="YES">
-                                        <rect key="frame" x="495" y="5" width="27" height="29"/>
+                                    <variation key="heightClass=compact">
                                         <mask key="constraints">
                                             <include reference="E1q-Iw-aj3"/>
                                             <include reference="ZGv-6j-Cxl"/>
